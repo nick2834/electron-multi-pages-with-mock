@@ -6,7 +6,13 @@
         <el-input class="search_input" size="mini" v-model="value" prefix-icon="el-icon-search"></el-input>
       </div>
 
-      <el-menu class="nav_menu no-dragable" mode="horizontal" :default-active="$route.name" router>
+      <el-menu
+        class="nav_menu no-dragable"
+        mode="horizontal"
+        :default-active="$route.name"
+        router
+        @select="handleSelect"
+      >
         <el-menu-item index="wechat">
           <i class="iconfont icon-wechat"></i>
         </el-menu-item>
@@ -35,9 +41,22 @@ export default {
       value: ""
     };
   },
+  computed: {
+    chatId: {
+      get() {
+        return this.$store.state.chat.chatId;
+      },
+      set(val) {
+        this.$store.commit("updateChatid", val);
+      }
+    }
+  },
   methods: {
     showLoginWindow() {
       ipcRenderer.send("showLoginWindow");
+    },
+    handleSelect(e) {
+      this.chatId = ""
     }
   }
 };
@@ -51,7 +70,7 @@ export default {
   display: flex;
   justify-content: space-between;
   .search_bar {
-    padding-left: 60px;
+    padding-left: 70px;
     width: 160px;
   }
   .search_input {

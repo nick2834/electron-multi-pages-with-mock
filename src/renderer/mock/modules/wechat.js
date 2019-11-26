@@ -2,7 +2,7 @@ import Mock from 'mockjs'
 
 // 生成数据列表
 var chatList = []
-for (let i = 0; i < Math.floor(Math.random() * 100 + 1); i++) {
+for (let i = 0; i < Math.floor(Math.random() * 20 + 1); i++) {
     chatList.push(Mock.mock({
         'id': '@id',
         'title': `@csentence()`, //标题

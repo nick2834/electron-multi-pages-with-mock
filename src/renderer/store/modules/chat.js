@@ -1,4 +1,4 @@
-// import http from '@/utils/httpRequest'
+import http from '@/utils/httpRequest'
 const state = {
     chatList: [],
     chatId: ""
@@ -19,15 +19,14 @@ const actions = {
         commit
     }) {
         return new Promise((resolve, reject) => {
-            resolve(1)
-            // http.get('/wechat/list').then(({
-            //     data
-            // }) => {
-            //     commit('updateChatList', data.page.list)
-            //     resolve(data)
-            // }).catch(err => {
-            //     reject(err)
-            // });
+            http.get('/wechat/list').then(({
+                data
+            }) => {
+                commit('updateChatList', data.page.list)
+                resolve(data)
+            }).catch(err => {
+                reject(err)
+            });
         })
     }
 }
