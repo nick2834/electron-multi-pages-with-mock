@@ -39,10 +39,15 @@ export default {
       set(val) {
         this.$store.commit("updateChatid", val);
       }
+    },
+    chatTitle: {
+      get() {
+        return this.$store.state.chat.chatTitle;
+      },
+      set(val) {
+        this.$store.commit("updateTitle", val);
+      }
     }
-  },
-  created() {
-    this.getChatList();
   },
   methods: {
     getChatList() {
@@ -53,7 +58,11 @@ export default {
     },
     handleSelect(e) {
       this.chatId = e.id;
+      this.chatTitle = e.title;
     }
+  },
+  activated() {
+    this.getChatList();
   }
 };
 </script>

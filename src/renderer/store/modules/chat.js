@@ -1,7 +1,8 @@
 import http from '@/utils/httpRequest'
 const state = {
     chatList: [],
-    chatId: ""
+    chatId: "",
+    chatTitle: ""
 }
 
 const mutations = {
@@ -10,6 +11,9 @@ const mutations = {
     },
     updateChatid(state, id) {
         state.chatId = id
+    },
+    updateTitle(state, title) {
+        state.chatTitle = title
     }
 }
 

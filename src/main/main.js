@@ -4,11 +4,13 @@ import {
 import {
     defaultConfig
 } from './config'
+import Modal from './modal'
 export default class main {
     mainURL = process.env.NODE_ENV === 'development' ?
         `http://localhost:9080/Main` :
         `file://${__dirname}/Main/index.html`
-    mainWindow = null
+    mainWindow = null;
+    modalWin = null;
     constructor() {
         // this.createMainWindow()
     }
@@ -23,6 +25,7 @@ export default class main {
 
         this.mainWindow.on('ready-to-show', () => {
             this.mainWindow.show()
+            this.modalWin = new Modal(this.mainWindow)
         })
 
         this.mainWindow.on('closed', () => {
@@ -44,5 +47,13 @@ export default class main {
 
     closeMainWindow() {
         this.mainWindow.close()
+    }
+
+    showOrHideModal(isModal) {
+        this.modalWin.showOrHideModal(isModal)
+    }
+
+    closeModal() {
+        this.modalWin.show()
     }
 }

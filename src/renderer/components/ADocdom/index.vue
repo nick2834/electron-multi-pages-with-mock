@@ -1,6 +1,6 @@
 <template>
   <!-- 帮助文档组件  可根据不同的路由设置不同的帮助文档-->
-  <div class="doc_box dragable">
+  <div class="el-main doc_box dragable">
     <img src="~@/assets/images/chat_placeholder.png" alt />
   </div>
 </template>
@@ -12,6 +12,7 @@ export default {};
   line-height: calc(100vh - 55px);
   text-align: center;
   position: relative;
+  padding: 0;
   img{
     width: 248px;
     height: 248px;

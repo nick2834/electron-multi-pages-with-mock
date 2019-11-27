@@ -61,6 +61,13 @@ ipcMain.on('showMainWindow', (event, arg) => {
   mainWin.createMainWindow()
 });
 
+ipcMain.on('showOrHideModal', (event, arg) => {
+  mainWin.showOrHideModal(arg)
+});
+
+ipcMain.on('closeModalWindow', () => {
+  mainWin.closeModal()
+})
 
 ipcMain.on('showLoginWindow', (event, arg) => {
   mainWin.closeMainWindow()
