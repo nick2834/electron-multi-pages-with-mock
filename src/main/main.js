@@ -1,55 +1,59 @@
 import {
-    app,
-    BrowserWindow,
-    ipcMain
+    BrowserWindow
 } from 'electron'
-import Modal from './modal'
 import {
     defaultConfig
 } from './config'
-process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
-if (process.env.NODE_ENV !== 'development') {
-    global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
-}
-let mainWindow, modalWin;
-const mainURL = process.env.NODE_ENV === 'development' ?
-    `http://localhost:9080/Main` :
-    `file://${__dirname}/Main/index.html`
-
-function createMainWindow() {
-    mainWindow = new BrowserWindow({
-        height: 725,
-        width: 1096,
-        ...defaultConfig
-    })
-
-    mainWindow.loadURL(mainURL)
-
-    mainWindow.on('ready-to-show', () => {
-        mainWindow.show();
-        modalWin = new Modal(mainWindow)
-    })
-
-    mainWindow.on('closed', () => {
-        mainWindow = null
-    })
-}
-/**
- * 监听创建新窗口
- */
-ipcMain.on('showMainWindow', (event, arg) => {
-    if (mainWindow) {
-        if (mainWindow.isVisible()) {
-            createMainWindow();
-        } else {
-            mainWindow.showInactive();
-        }
-    } else {
-        createMainWindow();
+import Modal from './modal'
+export default class main {
+    mainURL = process.env.NODE_ENV === 'development' ?
+        `http://localhost:9080/Main` :
+        `file://${__dirname}/Main/index.html`
+    mainWindow = null;
+    modalWin = null;
+    constructor() {
+        // this.createMainWindow()
     }
-});
+    createMainWindow() {
+        this.mainWindow = new BrowserWindow({
+            height: 725,
+            width: 1096,
+            ...defaultConfig
+        })
 
-// 打开关闭模态窗
-ipcMain.on('showOrHideModal', (event, arg) => {
-    modalWin.showOrHideModal(arg)
-});
+        this.mainWindow.loadURL(this.mainURL)
+
+        this.mainWindow.on('ready-to-show', () => {
+            this.mainWindow.show()
+            this.modalWin = new Modal(this.mainWindow)
+        })
+
+        this.mainWindow.on('closed', () => {
+            this.mainWindow = null
+        })
+    }
+
+    showMainWindow() {
+        if (this.mainWindow) {
+            if (this.mainWindow.isVisible()) {
+                this.createMainWindow();
+            } else {
+                this.mainWindow.showInactive();
+            }
+        } else {
+            this.createMainWindow();
+        }
+    }
+
+    closeMainWindow() {
+        this.mainWindow.close()
+    }
+
+    showOrHideModal(isModal) {
+        this.modalWin.showOrHideModal(isModal)
+    }
+
+    closeModal() {
+        this.modalWin.show()
+    }
+}

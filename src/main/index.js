@@ -6,17 +6,16 @@ import {
 import {
   defaultConfig
 } from './config'
-import MainWindow from './main copy';
+import MainWindow from './main';
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
-let loginWindow;
+let loginWindow,mainWin;
 const loginURL = process.env.NODE_ENV === 'development' ?
   `http://localhost:9080/Login` :
   `file://${__dirname}/Login/index.html`
-
 function createLoginWindow() {
   loginWindow = new BrowserWindow({
     title: "登录",
@@ -30,13 +29,14 @@ function createLoginWindow() {
   loginWindow.loadURL(loginURL)
 
   loginWindow.on('ready-to-show', () => {
-    loginWindow.show()
+    loginWindow.show();
+    mainWin = new MainWindow();
   })
 
   loginWindow.on('closed', () => {
     loginWindow = null
   })
-  require('./main')
+  // require('./main')
 }
 
 app.on('ready', createLoginWindow)
@@ -48,9 +48,16 @@ app.on('window-all-closed', () => {
 })
 //此处判断二次点击是否重新创建窗口
 app.on('activate', () => {
-  if (loginWindow === null) {
+  // 如果登录窗 主窗口皆为空 ====> 创建登录窗
+  if(loginWindow == null && mainWin.mainWindow == null){
     createLoginWindow()
+  }else if(loginWindow === null && mainWin.mainWindow){
+    mainWin.showMainWindow()
   }
+  // 登录窗 空 主窗口飞空 =======> 展示主窗口
+  // if (loginWindow === null) {
+  //   createLoginWindow()
+  // }
 })
 
 
@@ -61,9 +68,16 @@ ipcMain.on('hideLoginWindow', (e) => {
   loginWindow.close()
 })
 
-ipcMain.on('showLoginWindow', (e) => {
+ipcMain.on('showLoginWindow', () => {
+  mainWin.closeMainWindow()
   createLoginWindow()
 })
+//显示主窗口
+ipcMain.on('showMainWindow',() =>{
+  loginWindow.close()
+  mainWin.showMainWindow()
+})
+
 
 ipcMain.on('close_login', () => {
   app.quit()
