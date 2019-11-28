@@ -3,11 +3,12 @@ import Mock from 'mockjs'
 // 生成数据列表
 var chatList = []
 for (let i = 0; i < Math.floor(Math.random() * 20 + 1); i++) {
+    let csentence = Mock.mock('@csentence()')
     chatList.push(Mock.mock({
         'id': '@id',
-        'title': `@csentence()`, //标题
+        'title': csentence, //标题
         'subtitle': `@cparagraph(10)`, //标题
-        'chatImage': '@image(100x100, @color, #FFF, @character)'
+        'chatImage': `@image(100x100, @color, #FFF, ${csentence.substr(0,1)})`
     }))
 }
 

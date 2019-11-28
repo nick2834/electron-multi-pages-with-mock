@@ -1,6 +1,6 @@
 <template>
   <!-- 帮助文档组件  可根据不同的路由设置不同的帮助文档-->
-  <div class="el-main doc_box dragable">
+  <div class="doc_box dragable">
     <img src="~@/assets/images/chat_placeholder.png" alt />
   </div>
 </template>

@@ -1,5 +1,6 @@
 import {
-    BrowserWindow
+    BrowserWindow,
+    ipcMain
 } from 'electron'
 import {
     defaultConfig
@@ -23,7 +24,7 @@ export default class modal {
         })
 
         this.modalWindow.loadURL(this.modalURL)
-        this.modalWindow.closeDevTools()
+        // this.modalWindow.closeDevTools()
         // this.modalWindow.on('ready-to-show', () => {
         //     this.modalWindow.show()
         // })
@@ -46,9 +47,17 @@ export default class modal {
     }
 
     showOrHideModal(params) {
-        params ? this.modalWindow.show() : this.modalWindow.hide()
+        if (params.isOpen) {
+            this.showModalWithData(params)
+        } else {
+            this.modalWindow.hide()
+        }
     }
 
+    showModalWithData(params) {
+        this.modalWindow.show()
+        this.modalWindow.webContents.send('modal-messages', params);
+    }
     closemodalWindow() {
         this.modalWindow.close()
     }

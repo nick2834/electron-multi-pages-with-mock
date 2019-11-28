@@ -22,11 +22,16 @@ export default {
       get() {
         return this.$store.state.chat.chatTitle;
       }
+    },
+    chatId: {
+      get() {
+        return this.$store.state.chat.chatId;
+      }
     }
   },
   methods: {
     showModal() {
-      ipcRenderer.send("showOrHideModal", true);
+      ipcRenderer.send("showOrHideModal", { isOpen: true, data: this.chatId });
     }
   }
 };

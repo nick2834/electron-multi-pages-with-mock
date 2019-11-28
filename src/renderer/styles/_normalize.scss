@@ -39,7 +39,6 @@ blockquote,
 th,
 td,
 hr,
-button,
 article,
 aside,
 details,
@@ -91,7 +90,6 @@ a h6 {
   *cursor: pointer;
 }
 body,
-button,
 input,
 select,
 textarea {
@@ -132,13 +130,6 @@ b {
 input,
 select,
 textarea,
-button {
-  font-size: 1em;
-  -webkit-box-sizing: content-box;
-  -moz-box-sizing: content-box;
-  box-sizing: border-box;
-}
-button,
 input[type="button"],
 input[type="submit"] {
   cursor: pointer;

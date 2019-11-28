@@ -59,6 +59,9 @@ export default {
     handleSelect(e) {
       this.chatId = e.id;
       this.chatTitle = e.title;
+      this.$router.push({
+        name: "room"
+      });
     }
   },
   activated() {

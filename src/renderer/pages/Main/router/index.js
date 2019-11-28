@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '@/store'
 Vue.use(Router);
 const originalPush = Router.prototype.push
 Router.prototype.push = function push(location) {
@@ -13,19 +14,27 @@ const router = new Router({
     {
       path: '/',
       name: 'home',
-      component: require('../Home').default,
+      component: require('../views/Home').default,
       children: [{
         path: '/wechat',
         name: 'wechat',
-        component: require('../Wechat').default
+        component: require('../views/Wechat').default,
+        children: [{
+          path: '/room',
+          name: 'room',
+          component: require('../views/Room').default,
+          meta: {
+            parent: 'wechat'
+          }
+        }]
       }, {
         path: '/contact',
         name: 'contact',
-        component: require('../Contact').default
+        component: require('../views/Contact').default
       }, {
         path: '/collect',
         name: 'collect',
-        component: require('../Collect').default
+        component: require('../views/Collect').default
       }]
     },
     {
@@ -34,4 +43,9 @@ const router = new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  next()
+})
+
 export default router
