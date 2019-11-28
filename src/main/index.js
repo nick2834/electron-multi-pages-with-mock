@@ -6,6 +6,8 @@ import {
 import {
   defaultConfig
 } from './config'
+import MainWindow from './main copy';
+
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
@@ -24,7 +26,7 @@ function createLoginWindow() {
     minimizable: false,
     ...defaultConfig
   })
-  require('./main')
+
   loginWindow.loadURL(loginURL)
 
   loginWindow.on('ready-to-show', () => {
@@ -34,6 +36,7 @@ function createLoginWindow() {
   loginWindow.on('closed', () => {
     loginWindow = null
   })
+  require('./main')
 }
 
 app.on('ready', createLoginWindow)
@@ -43,7 +46,7 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
-
+//此处判断二次点击是否重新创建窗口
 app.on('activate', () => {
   if (loginWindow === null) {
     createLoginWindow()
@@ -55,13 +58,13 @@ app.on('activate', () => {
  * 监听创建新窗口
  */
 ipcMain.on('hideLoginWindow', (e) => {
-  loginWindow.hide()
+  loginWindow.close()
 })
 
 ipcMain.on('showLoginWindow', (e) => {
-  loginWindow.show()
+  createLoginWindow()
 })
 
-ipcMain.on('close_login',() =>{
+ipcMain.on('close_login', () => {
   app.quit()
 })

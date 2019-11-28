@@ -66,7 +66,7 @@ export default {
       ipcRenderer.send("showOrHideModal", { isOpen: false });
     }
   },
-  mounted() {
+  created() {
     //此处用来接收主窗口发送过来的消息
     ipcRenderer.on("modal-messages", (event, arg) => {
       if(arg){
