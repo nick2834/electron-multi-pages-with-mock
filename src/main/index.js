@@ -12,10 +12,11 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
-let loginWindow,mainWin;
+let loginWindow, mainWin;
 const loginURL = process.env.NODE_ENV === 'development' ?
   `http://localhost:9080/Login` :
   `file://${__dirname}/Login/index.html`
+
 function createLoginWindow() {
   loginWindow = new BrowserWindow({
     title: "登录",
@@ -47,17 +48,10 @@ app.on('window-all-closed', () => {
   }
 })
 //此处判断二次点击是否重新创建窗口
-app.on('activate', () => {
-  // 如果登录窗 主窗口皆为空 ====> 创建登录窗
-  if(loginWindow == null && mainWin.mainWindow == null){
-    createLoginWindow()
-  }else if(loginWindow === null && mainWin.mainWindow){
-    mainWin.showMainWindow()
+app.on('activate', () => {  
+  if (loginWindow == null) {
+    mainWin.mainWindow ? mainWin.showMainWindow() : createLoginWindow()
   }
-  // 登录窗 空 主窗口飞空 =======> 展示主窗口
-  // if (loginWindow === null) {
-  //   createLoginWindow()
-  // }
 })
 
 
@@ -73,11 +67,27 @@ ipcMain.on('showLoginWindow', () => {
   createLoginWindow()
 })
 //显示主窗口
-ipcMain.on('showMainWindow',() =>{
+ipcMain.on('showMainWindow', () => {
   loginWindow.close()
   mainWin.showMainWindow()
 })
 
+// {
+  //   isOpen: true,
+  //   url: "adduser",
+  //   options: {},
+  //   data: {
+  //     chatId: this.chatId
+  //   }
+  // };
+ipcMain.on('showOrHideModal', (event, arg) => {
+  mainWin.openOrCloseModal(arg)
+})
+//公告弹窗
+ipcMain.on('showNotice',(event,arg) =>{
+  console.error(arg)
+  mainWin.openOrCloseNotice(arg)
+})
 
 ipcMain.on('close_login', () => {
   app.quit()

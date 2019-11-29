@@ -25,7 +25,13 @@ export default class main {
 
         this.mainWindow.on('ready-to-show', () => {
             this.mainWindow.show()
-            this.modalWin = new Modal(this.mainWindow)
+            this.modalWin = new Modal({
+                parent: this.mainWindow,
+                // width: 520,
+                // height:476,
+                // modal: false,
+                // movable: true,
+            }, '')
         })
 
         this.mainWindow.on('closed', () => {
@@ -35,11 +41,14 @@ export default class main {
 
     showMainWindow() {
         if (this.mainWindow) {
-            if (this.mainWindow.isVisible()) {
-                this.createMainWindow();
-            } else {
-                this.mainWindow.showInactive();
-            }
+            this.mainWindow.showInactive();
+            // if (this.mainWindow.isVisible()) {
+            //     console.error('2222222222222222')
+            //     this.createMainWindow();
+            // } else {
+            //     console.error('3333333333333333')
+            //     this.mainWindow.showInactive();
+            // }
         } else {
             this.createMainWindow();
         }
@@ -49,8 +58,13 @@ export default class main {
         this.mainWindow.close()
     }
 
-    showOrHideModal(isModal) {
-        this.modalWin.showOrHideModal(isModal)
+    openOrCloseModal(params) {
+        // params.options = Object.assign({parent:this.mainWindow},params.options)
+        this.modalWin.showOrHideModal(params)
+    }
+
+    openOrCloseNotice(params){
+        this.modalWin.close(params)
     }
 
     closeModal() {

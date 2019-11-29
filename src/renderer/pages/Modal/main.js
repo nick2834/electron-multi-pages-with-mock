@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import App from './App';
+import router from './router'
 import httpRequest from '@/utils/httpRequest'
 import VueCookie from 'vue-cookie'
 import ElementUI from 'element-ui';
@@ -14,6 +15,9 @@ Vue.use(VueCookie)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  components: { App },
+  router,
+  components: {
+    App
+  },
   template: '<App/>'
 });

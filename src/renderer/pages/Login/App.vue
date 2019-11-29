@@ -46,7 +46,6 @@ export default {
       }).then(({ data }) => {
         if (data && data.code === 0) {
           this.$cookie.set("token", data.token);
-          // ipcRenderer.send("hideLoginWindow");
           ipcRenderer.send("showMainWindow");
         } else {
           this.$message.error(data.msg);

@@ -11,7 +11,7 @@
       </span>
       <div class="message_detail">
         <div class="detail_info">
-          <div class="detail_info-title el-icon-">群公告</div>
+          <div class="detail_info-title el-icon-" @click="handleNotice">群公告</div>
           <div class="detail_info-content">{{chatSubtitle}}</div>
         </div>
         <div class="detail_group">
@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import { ipcRenderer, remote } from "electron";
 import AMessageBox from "@/components/AMessagebox";
 import AMessageInput from "@/components/AMessageinput";
 export default {
@@ -83,7 +84,6 @@ export default {
     },
     getList() {
       this.$http.get("/wechat/room/member").then(({ data }) => {
-        console.log(data);
         if (data.code == 0) {
           this.memberList = data.page.list;
         }
@@ -91,6 +91,21 @@ export default {
     },
     handleSelect(item) {
       this.memId = item.id;
+    },
+    handleNotice() {
+      let sendData = {
+        isOpen: true,
+        url: "notice",
+        options: {
+          width: 520,
+          height: 476,
+          movable: false
+        },
+        data: {
+          chatId: this.chatId
+        }
+      };
+      ipcRenderer.send("showNotice", sendData);
     }
   },
   created() {

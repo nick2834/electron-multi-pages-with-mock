@@ -31,7 +31,15 @@ export default {
   },
   methods: {
     showModal() {
-      ipcRenderer.send("showOrHideModal", { isOpen: true, data: this.chatId });
+      let sendData = {
+        isOpen: true,
+        url: "",
+        options: {},
+        data: {
+          chatId: this.chatId
+        }
+      };
+      ipcRenderer.send("showOrHideModal", sendData);
     }
   }
 };
